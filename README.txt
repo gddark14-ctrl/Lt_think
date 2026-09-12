@@ -1,6 +1,1 @@
-휴대폰용 로또 AI 패턴 연구소
-1. 폴더 전체를 정적 호스팅에 업로드합니다.
-2. index.html이 시작 페이지입니다.
-3. GitHub Pages, Netlify, Vercel 등에서 정적 사이트로 배포할 수 있습니다.
-4. 현재는 브라우저에서 공개 JSON을 읽어 백테스트합니다.
-5. 향후 서버를 붙이면 패턴 탐색/결과 저장을 확장할 수 있습니다.
+GitHub Pages용 모바일 웹앱 v3. index.html/app.js/style.css를 기존 저장소에 덮어쓰면 됩니다.
