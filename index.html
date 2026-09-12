@@ -1,8 +1,47 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>로또 AI 패턴 연구소 v3</title><link rel="stylesheet" href="style.css"></head><body><main>
-<header><h1>🎯 로또 AI 패턴 연구소 <small>v3</small></h1><p>자동 패턴 탐색 · 워크포워드 백테스트 · 앙상블 추천</p></header>
-<section class="card controls"><button id="run">🚀 패턴 자동탐색 + 백테스트</button><button id="pick">🎯 최신 데이터로 10게임</button><div id="status">준비됨</div></section>
-<section class="card"><h2>📊 검증 결과</h2><div id="stats">-</div></section>
-<section class="card"><h2>🧠 살아남은 패턴</h2><div id="patterns">분석 전</div></section>
-<section class="card"><h2>🎯 추천 10게임</h2><div id="picks">분석 후 생성</div></section>
-<section class="card"><h2>ℹ️ 검증 방법</h2><p>과거 회차를 시간순으로 한 회차씩 숨기고 예측합니다. 패턴 탐색 구간과 검증 구간을 분리해 과적합을 줄입니다. 랜덤 기준과 비교하며, 1등 10%를 보장하지 않습니다.</p></section>
-</main><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>로또 AI 패턴 연구소 v4</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<header>
+  <h1>🎯 로또 AI 패턴 연구소 <small>v4</small></h1>
+  <p>자동 패턴 탐색 · 시간순 검증 · 최종 테스트 · 10게임 추천</p>
+</header>
+
+<section class="panel">
+  <div class="buttons">
+    <button id="run">🚀 수천 패턴 자동탐색 + 전체 백테스트</button>
+    <button id="pick">🎯 최신 데이터로 10게임</button>
+  </div>
+  <div id="status">대기 중</div>
+  <div class="progress"><i id="bar"></i></div>
+</section>
+
+<section class="panel">
+  <h2>📊 검증 결과</h2>
+  <div id="stats" class="stats"><div class="muted">분석을 시작하세요.</div></div>
+</section>
+
+<section class="panel">
+  <h2>🧪 자동 탐색 결과</h2>
+  <div id="patterns"></div>
+</section>
+
+<section class="panel">
+  <h2>🎯 추천 10게임</h2>
+  <div id="picks"></div>
+</section>
+
+<section class="panel note">
+  <b>중요</b>
+  <p>이 앱은 과거 데이터에서 성능이 상대적으로 좋은 규칙을 찾는 연구용 도구입니다. 로또의 당첨확률 자체를 높인다고 보장하지 않습니다. 최종 테스트는 모델 선택에 사용하지 않은 회차로 따로 계산합니다.</p>
+</section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
