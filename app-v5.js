@@ -1,4 +1,7 @@
-const DATA="https://smok95.github.io/lotto/results/all.json";
+const DATA_URLS=[
+  "https://raw.githubusercontent.com/papaya5rhw1984/lotto-data/main/all.json",
+  "https://smok95.github.io/lotto/results/all.json"
+];
 let draws=[], best=null;
 const $=id=>document.getElementById(id);
 const pct=x=>(x*100).toFixed(3)+"%";
@@ -61,10 +64,9 @@ function tickets(hist,p,seed,K=10){
 }
 
 function proxyPatternScore(p,start,end){
-  // Fast 100k-pattern screen: one ticket per sampled historical draw.
-  // Sampling every 4th draw keeps phones responsive while preserving chronology.
   let hit3=0,hit4=0,avg=0,n=0;
-  for(let i=start;i<end;i+=4){
+  const span=end-start, step=Math.max(1,Math.floor(span/40));
+  for(let i=start;i<end;i+=step){
     const t=ticket(draws.slice(0,i),p,(p.seed+i)>>>0);
     const h=overlap(t,draws[i].numbers);avg+=h;n++;
     if(h>=3)hit3++;if(h>=4)hit4++;
@@ -113,17 +115,37 @@ async function run(){
   $("run").disabled=true;$("pick").disabled=true;
   try{
     prog(2,"최신 1~현재 데이터 불러오는 중…");
-    const rr=await fetch(DATA,{cache:"no-store"});draws=norm(await rr.json());
-    if(draws.length<300)throw Error("data");
+    let raw=null,lastErr=null;
+    for(const url of DATA_URLS){
+      try{
+        prog(2,`데이터 연결 중… ${url.includes("raw.githubusercontent")?"대체 데이터 서버":"기본 데이터 서버"}`);
+        const ctrl=new AbortController(), timer=setTimeout(()=>ctrl.abort(),8000);
+        const rr=await fetch(url,{cache:"no-store",signal:ctrl.signal});
+        clearTimeout(timer);
+        if(!rr.ok)throw Error("HTTP "+rr.status);
+        raw=await rr.json(); break;
+      }catch(e){lastErr=e}
+    }
+    if(!raw)throw lastErr||Error("data");
+    draws=norm(raw);
+    if(draws.length<300)throw Error("few data");
     const n=draws.length,tr=Math.floor(n*.60),va=Math.floor(n*.80),te=n,start=100;
     const r=rng(0x20260912),cand=[];
     prog(4,"10만 패턴 생성 중… (v5)");
-    for(let i=0;i<100000;i++)cand.push(makePattern(r));
+    for(let i=0;i<100000;i+=2000){
+      for(let j=i;j<Math.min(i+2000,100000);j++)cand.push(makePattern(r));
+      await new Promise(requestAnimationFrame);
+      prog(5+8*(i/100000),`10만 패턴 생성 ${Math.min(i+2000,100000).toLocaleString()}/100,000`);
+    }
     const screen=[];
-    for(let i=0;i<cand.length;i++){
-      const p=cand[i],q=proxyPatternScore(p,start,tr);
-      screen.push({p,q});
-      if(i%1000===0)prog(5+35*i/cand.length,`10만 패턴 1차 탐색 ${i.toLocaleString()}/100,000`);
+    for(let i=0;i<cand.length;i+=250){
+      const end=Math.min(i+250,cand.length);
+      for(let j=i;j<end;j++){
+        const p=cand[j],q=proxyPatternScore(p,start,tr);
+        screen.push({p,q});
+      }
+      await new Promise(requestAnimationFrame);
+      prog(13+27*(end/cand.length),`10만 패턴 1차 탐색 ${end.toLocaleString()}/100,000`);
     }
     screen.sort((a,b)=>b.q-a.q);
     const survivors=screen.slice(0,200);
