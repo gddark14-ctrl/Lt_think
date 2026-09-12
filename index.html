@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>로또 AI 패턴 연구소</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div class="app">
+<header><h1>🎯 로또 AI 패턴 연구소</h1><p>패턴 탐색 · 워크포워드 백테스트 · 번호 추천</p></header>
+<section class="card">
+<button id="analyze">🚀 전체 분석 시작</button><button id="refresh">🔄 데이터 업데이트</button>
+<div id="status">준비됨</div>
+</section>
+<section class="card"><h2>백테스트</h2><div id="stats">분석 전</div></section>
+<section class="card"><h2>🔬 자동 발견 패턴</h2><div id="patterns">분석 전</div></section>
+<section class="card"><h2>🎯 다음 회차 10게임</h2><div id="picks"></div></section>
+<section class="card"><h2>📌 원리</h2><p>각 과거 회차를 예측할 때 해당 회차 이전 데이터만 사용합니다. 성능이 검증된 신호를 결합해 후보를 만듭니다.</p>
+<p class="warn">공정한 6/45 추첨에서 과거 패턴이 1등 확률을 10%로 보장한다는 근거는 없습니다. 이 앱은 패턴의 실제 백테스트 성능을 검증하는 연구용 도구입니다.</p></section>
+</div><script src="app.js"></script></body></html>
